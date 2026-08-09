@@ -25,7 +25,7 @@ class Custombutton {
                 width: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               )
             : Text(

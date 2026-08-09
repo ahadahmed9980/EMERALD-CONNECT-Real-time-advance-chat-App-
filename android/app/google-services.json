@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "899848718003",
+    "project_id": "emerald-connect-chat-app",
+    "storage_bucket": "emerald-connect-chat-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899848718003:android:72a9ecc12d0ce329fe12c6",
+        "android_client_info": {
+          "package_name": "com.example.emberald"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899848718003-7s5msls8v6vksctasvme64mdsodmgp2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBBfIYLEedjRH0wmovSO_7m0qWaeCnrzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899848718003-7s5msls8v6vksctasvme64mdsodmgp2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,11 @@
+import 'package:emberald/controller/signup.controller.dart';
 import 'package:emberald/utils/appcolors.dart';
 import 'package:emberald/widgets/custombutton.dart';
 import 'package:emberald/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:go_router/go_router.dart';
 
 class Signup extends StatefulWidget {
@@ -12,11 +16,8 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
-  TextEditingController confirmpasswordcontroller = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final signupcontroller = Get.find<Signupcontroller>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class _SignupState extends State<Signup> {
                 child: Column(
                   children: [
                     DynamicTextFormField(
-                      controller: namecontroller,
+                      controller: signupcontroller.namecontroller,
                       labelText: "Full Name",
                       hintText: "Enter your full name",
                       prefixIcon: Icons.person_2_outlined,
@@ -74,7 +75,7 @@ class _SignupState extends State<Signup> {
                       },
                     ),
                     DynamicTextFormField(
-                      controller: emailcontroller,
+                      controller: signupcontroller.emailcontroller,
                       labelText: "Email",
                       hintText: "Enter your email",
                       prefixIcon: Icons.email_outlined,
@@ -93,7 +94,7 @@ class _SignupState extends State<Signup> {
                       },
                     ),
                     DynamicTextFormField(
-                      controller: passwordcontroller,
+                      controller: signupcontroller.passwordcontroller,
                       labelText: "Password",
                       hintText: "Create a password",
                       prefixIcon: Icons.lock_outline_rounded,
@@ -129,7 +130,7 @@ class _SignupState extends State<Signup> {
                       },
                     ),
                     DynamicTextFormField(
-                      controller: confirmpasswordcontroller,
+                      controller: signupcontroller.confirmpasswordcontroller,
                       labelText: "Confirm Password",
                       hintText: "Confirm your password",
                       prefixIcon: Icons.lock_outline_rounded,
@@ -139,7 +140,7 @@ class _SignupState extends State<Signup> {
                           return "Please confirm your password";
                         }
 
-                        if (value != passwordcontroller.text) {
+                        if (value != signupcontroller.passwordcontroller.text) {
                           return "Passwords do not match";
                         }
 
@@ -150,16 +151,21 @@ class _SignupState extends State<Signup> {
                 ),
               ),
               SizedBox(height: size.height * 0.03),
-
-              Custombutton.custom(
-                context: context,
-                text: "Sign Up",
-                onPressed: () {
-                  if (formkey.currentState!.validate()) {
-                    print("signin");
-                  }
-                },
-              ),
+              Obx(() {
+                return Custombutton.custom(
+                  context: context,
+                  text: "Sign Up",
+                  isLoading: signupcontroller.isLoading.value,
+                  onPressed: () async {
+                    if (formkey.currentState!.validate()) {
+                      bool isSuccess = await signupcontroller.signup();
+                      if (isSuccess && context.mounted) {
+                        context.go('/home');
+                      }
+                    }
+                  },
+                );
+              }),
               SizedBox(height: size.height * 0.02),
               //or continue with
               Row(

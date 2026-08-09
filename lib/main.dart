@@ -1,9 +1,19 @@
 import 'package:emberald/route/approutes.dart';
 import 'package:emberald/utils/appcolors.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+     
+    );
+    debugPrint("Firebase App initialized successfully");
+  } catch (e) {
+    debugPrint("Error initializing Firebase: ${e.toString()}");
+  }
   runApp(const MyApp());
 }
 //height 914
@@ -78,7 +88,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        
       ),
     );
   }
