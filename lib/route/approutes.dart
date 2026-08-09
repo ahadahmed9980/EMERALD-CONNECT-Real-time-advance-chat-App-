@@ -1,3 +1,4 @@
+import 'package:emberald/bindings/signinbinding.dart';
 import 'package:emberald/bindings/signupbinding.dart';
 import 'package:emberald/screens/getstarted.dart';
 import 'package:emberald/screens/homepage.dart';
@@ -69,6 +70,7 @@ final GoRouter appRouters = GoRouter(
     GoRoute(
       path: '/login',
       pageBuilder: (context, state) {
+       Signinbinding().dependencies();
         return CustomTransitionPage(
           key: state.pageKey,
           child: const Login(),

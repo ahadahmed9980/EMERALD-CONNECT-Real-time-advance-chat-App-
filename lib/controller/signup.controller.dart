@@ -1,3 +1,5 @@
+
+
 import 'package:emberald/model/usermodel.dart';
 import 'package:emberald/utils/golbal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +16,7 @@ class Signupcontroller extends GetxController {
   Global golbal = Global();
   //using for signup button
   RxBool isLoading = false.obs;
+  RxString emailError = ''.obs;
 
   @override
   void onClose() {
@@ -24,13 +27,21 @@ class Signupcontroller extends GetxController {
     super.onClose();
   }
 
+  void clearFields() {
+    namecontroller.clear();
+    emailcontroller.clear();
+    passwordcontroller.clear();
+    confirmpasswordcontroller.clear();
+    emailError.value = '';
+  }
+
   Future<bool> signup() async {
+    emailError.value = '';
     final email = emailcontroller.text.trim();
     final name = namecontroller.text.trim();
     final password = passwordcontroller.text.trim();
     final confirmPassword = confirmpasswordcontroller.text.trim();
 
-   
     if (email.isEmpty || name.isEmpty || password.isEmpty) {
       Get.snackbar("Error", "Please fill all fields");
       return false;
@@ -54,16 +65,24 @@ class Signupcontroller extends GetxController {
           .collection("Users")
           .doc(golbal.globaluid)
           .set(userModel.toMap());
+      clearFields();
 
       return true;
     } on FirebaseAuthException catch (err) {
-      Get.snackbar("Firebase Error", err.message ?? "Authentication failed");
+      // 👈 Here is the Signup Error Handling:
+      if (err.code == 'email-already-in-use') {
+        emailError.value =
+            "This email is already registered. Please login instead.";
+      } else if (err.code == 'invalid-email') {
+        emailError.value = "The email address is badly formatted.";
+      } else {
+        emailError.value = err.message ?? "Registration failed. Try again.";
+      }
       return false;
     } catch (err) {
       Get.snackbar("Error", err.toString());
       return false;
     } finally {
-      
       isLoading.value = false;
     }
   }

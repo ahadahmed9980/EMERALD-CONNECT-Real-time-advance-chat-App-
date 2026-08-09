@@ -1,22 +1,23 @@
+import 'package:emberald/controller/signin.controller.dart';
 import 'package:emberald/utils/appcolors.dart';
 import 'package:emberald/widgets/custombutton.dart';
 import 'package:emberald/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
- const Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
- final TextEditingController emailcontroller = TextEditingController();
-
-  final TextEditingController passwordcontroller = TextEditingController();
-
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final signincontroller = Get.find<Signincontroller>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +41,20 @@ class _LoginState extends State<Login> {
                 "assets/images/mainlogo.png",
                 height: size.height * 0.1,
               ),
-              Text("Create Account", style: textTheme.displayLarge),
+              Text("Welcome Back", style: textTheme.displayLarge),
               SizedBox(height: size.height * 0.01),
               Text(
                 textAlign: TextAlign.center,
-                "Sign up to get started with\nEmerald Connect",
+                "Login to your account",
                 style: textTheme.bodyMedium,
               ),
-              SizedBox(height: size.height * 0.018),
+              SizedBox(height: size.height * 0.1),
               Form(
                 key: formkey,
                 child: Column(
                   children: [
                     DynamicTextFormField(
-                      controller: emailcontroller,
+                      controller: signincontroller.emailcontroller,
                       labelText: "Email",
                       hintText: "Enter your email",
                       prefixIcon: Icons.email_outlined,
@@ -67,62 +68,73 @@ class _LoginState extends State<Login> {
                         ).hasMatch(value.trim())) {
                           return "Please enter a valid email";
                         }
+                        if (signincontroller.emailError.value.isNotEmpty) {
+                          return signincontroller.emailError.value;
+                        }
 
                         return null;
                       },
                     ),
+
                     DynamicTextFormField(
-                      controller: passwordcontroller,
+                      controller: signincontroller.passwordcontroller,
                       labelText: "Password",
-                      hintText: "Create a password",
+                      hintText: "Enter your password",
                       prefixIcon: Icons.lock_outline_rounded,
                       ispassword: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter a password";
                         }
-
                         if (value.length < 8) {
                           return "Password must be at least 8 characters";
                         }
-
-                        if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                          return "Password must contain an uppercase letter";
+                        //checking from controller
+                        if (signincontroller.passwordError.value.isNotEmpty) {
+                          return signincontroller.passwordError.value;
                         }
-
-                        if (!RegExp(r'[a-z]').hasMatch(value)) {
-                          return "Password must contain a lowercase letter";
-                        }
-
-                        if (!RegExp(r'[0-9]').hasMatch(value)) {
-                          return "Password must contain a number";
-                        }
-
-                        if (!RegExp(
-                          r'[!@#$%^&*(),.?":{}|<>_\-]',
-                        ).hasMatch(value)) {
-                          return "Password must contain a special character";
-                        }
-
                         return null;
                       },
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.03),
 
-              Custombutton.custom(
-                context: context,
-                text: "Sign Up",
-                onPressed: () {
-                  if (formkey.currentState!.validate()) {
-                    print("signin");
-                  }
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Forget Password?",
+                    style: textTheme.labelMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: size.height * 0.1),
+
+              Obx(() {
+                return Custombutton.custom(
+                  context: context,
+                  text: "Signin",
+                  isLoading: signincontroller.isLoading.value,
+                  onPressed: () async {
+                    print("button clicked");
+                    if (formkey.currentState!.validate()) {
+                      bool isSuccess = await signincontroller.signin();
+
+                      if (isSuccess && context.mounted) {
+                        context.go('/home');
+                      } else {
+                        formkey.currentState!.validate();
+                      }
+                    }
+                  },
+                );
+              }),
+
               //or continue with
+              SizedBox(height: size.height * 0.02),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -148,15 +160,15 @@ class _LoginState extends State<Login> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/google.png",
                   ),
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/apple.png",
                   ),
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/facebook.png",
                   ),
@@ -176,7 +188,7 @@ class _LoginState extends State<Login> {
                       context.push('/signup');
                     },
                     child: Text(
-                      " Login",
+                      " Sign Up",
                       style: textTheme.labelMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -190,29 +202,4 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-}
-
-//image boxes
-Widget imageboxes({required BuildContext context, required String image}) {
-  final size = MediaQuery.of(context).size;
-  return Container(
-    padding: const EdgeInsets.all(5.0),
-    alignment: Alignment.center,
-    height: size.height * 0.07,
-    width: 70,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.25), // 15% opacity
-          blurRadius: 10,
-          spreadRadius: 2,
-          offset: const Offset(0, 4),
-        ),
-      ],
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
-    ),
-
-    child: Image.asset(image),
-  );
 }

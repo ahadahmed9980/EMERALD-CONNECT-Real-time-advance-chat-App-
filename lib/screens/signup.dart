@@ -4,8 +4,6 @@ import 'package:emberald/widgets/custombutton.dart';
 import 'package:emberald/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:go_router/go_router.dart';
 
 class Signup extends StatefulWidget {
@@ -89,6 +87,9 @@ class _SignupState extends State<Signup> {
                         ).hasMatch(value.trim())) {
                           return "Please enter a valid email";
                         }
+                        if (signupcontroller.emailError.value.isNotEmpty) {
+                          return signupcontroller.emailError.value;
+                        }
 
                         return null;
                       },
@@ -161,6 +162,8 @@ class _SignupState extends State<Signup> {
                       bool isSuccess = await signupcontroller.signup();
                       if (isSuccess && context.mounted) {
                         context.go('/home');
+                      } else {
+                        formkey.currentState!.validate();
                       }
                     }
                   },
@@ -193,15 +196,15 @@ class _SignupState extends State<Signup> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/google.png",
                   ),
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/apple.png",
                   ),
-                  imageboxes(
+                  Custombutton.imageboxes(
                     context: context,
                     image: "assets/images/facebook.png",
                   ),
@@ -242,26 +245,3 @@ class _SignupState extends State<Signup> {
 }
 
 //image boxes
-Widget imageboxes({required BuildContext context, required String image}) {
-  final size = MediaQuery.of(context).size;
-  return Container(
-    padding: const EdgeInsets.all(5.0),
-    alignment: Alignment.center,
-    height: size.height * 0.07,
-    width: 70,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.25), // 15% opacity
-          blurRadius: 10,
-          spreadRadius: 2,
-          offset: const Offset(0, 4),
-        ),
-      ],
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
-    ),
-
-    child: Image.asset(image),
-  );
-}

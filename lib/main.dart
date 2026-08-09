@@ -60,10 +60,16 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(
               fontSize: 18,
               height: 1.2,
+              fontWeight: FontWeight.bold,
               color: AppColors.textSecondary,
             ),
             labelLarge: TextStyle(
               fontSize: 20,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.8,
+            ),
+              labelMedium: TextStyle(
+              fontSize: 15,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.8,
             ),
