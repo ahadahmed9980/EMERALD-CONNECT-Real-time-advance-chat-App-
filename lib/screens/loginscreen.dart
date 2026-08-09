@@ -4,18 +4,18 @@ import 'package:emberald/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class Login extends StatefulWidget {
+ const Login({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<Login> createState() => _LoginState();
 }
 
-class _SignupState extends State<Signup> {
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
-  TextEditingController confirmpasswordcontroller = TextEditingController();
+class _LoginState extends State<Login> {
+ final TextEditingController emailcontroller = TextEditingController();
+
+  final TextEditingController passwordcontroller = TextEditingController();
+
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
@@ -52,27 +52,6 @@ class _SignupState extends State<Signup> {
                 key: formkey,
                 child: Column(
                   children: [
-                    DynamicTextFormField(
-                      controller: namecontroller,
-                      labelText: "Full Name",
-                      hintText: "Enter your full name",
-                      prefixIcon: Icons.person_2_outlined,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "Please enter your full name";
-                        }
-
-                        if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value.trim())) {
-                          return "Name can only contain letters";
-                        }
-
-                        if (value.trim().length < 3) {
-                          return "Name must be at least 3 characters";
-                        }
-
-                        return null;
-                      },
-                    ),
                     DynamicTextFormField(
                       controller: emailcontroller,
                       labelText: "Email",
@@ -123,24 +102,6 @@ class _SignupState extends State<Signup> {
                           r'[!@#$%^&*(),.?":{}|<>_\-]',
                         ).hasMatch(value)) {
                           return "Password must contain a special character";
-                        }
-
-                        return null;
-                      },
-                    ),
-                    DynamicTextFormField(
-                      controller: confirmpasswordcontroller,
-                      labelText: "Confirm Password",
-                      hintText: "Confirm your password",
-                      prefixIcon: Icons.lock_outline_rounded,
-                      ispassword: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please confirm your password";
-                        }
-
-                        if (value != passwordcontroller.text) {
-                          return "Passwords do not match";
                         }
 
                         return null;
@@ -208,15 +169,11 @@ class _SignupState extends State<Signup> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "Already have an account?",
-                    style: textTheme.labelMedium,
-                  ),
+                  Text("Don't have an account?", style: textTheme.labelMedium),
                   SizedBox(height: size.height * 0.02),
                   InkWell(
                     onTap: () {
-                      print('login clicked');
-                      context.push("/login");
+                      context.push('/signup');
                     },
                     child: Text(
                       " Login",

@@ -53,10 +53,15 @@ class Getstarted extends StatelessWidget {
                     style: textTheme.labelMedium,
                   ),
                   SizedBox(height: size.height * 0.01),
-                  Text(
-                    " Login",
-                    style: textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                  InkWell(
+                    onTap: () {
+                      context.push('/login');
+                    },
+                    child: Text(
+                      " Login",
+                      style: textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ],

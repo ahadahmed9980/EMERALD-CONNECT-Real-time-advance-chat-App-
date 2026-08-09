@@ -1,5 +1,4 @@
 import 'package:emberald/route/approutes.dart';
-import 'package:emberald/screens/splashscreen.dart';
 import 'package:emberald/utils/appcolors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,6 +60,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         appBarTheme: const AppBarTheme(
+          scrolledUnderElevation: 0,
           backgroundColor: AppColors.backgroundColor,
           centerTitle: true,
           elevation: 0, // Shadow hatana
@@ -74,10 +74,11 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
             ),
           ),
         ),
+        
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:emberald/screens/getstarted.dart';
+import 'package:emberald/screens/loginscreen.dart';
 import 'package:emberald/screens/signup.dart';
 import 'package:emberald/screens/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +78,28 @@ final GoRouter appRouters = GoRouter(
   },
 ),
   
-  
+  GoRoute(
+  path: '/login',
+  pageBuilder: (context, state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const Login(),
+      transitionsBuilder: (
+        context,
+        animation,
+        secondaryAnimation,
+        child,
+      ) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    );
+  },
+),
   ],
 );
