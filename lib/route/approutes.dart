@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouters = GoRouter(
-  initialLocation: '/splash',
+  initialLocation: '/home',
   routes: [
     GoRoute(
       path: '/splash',
@@ -70,7 +70,7 @@ final GoRouter appRouters = GoRouter(
     GoRoute(
       path: '/login',
       pageBuilder: (context, state) {
-       Signinbinding().dependencies();
+        Signinbinding().dependencies();
         return CustomTransitionPage(
           key: state.pageKey,
           child: const Login(),

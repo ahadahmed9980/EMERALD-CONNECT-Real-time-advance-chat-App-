@@ -7,9 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await Firebase.initializeApp(
-     
-    );
+    await Firebase.initializeApp();
     debugPrint("Firebase App initialized successfully");
   } catch (e) {
     debugPrint("Error initializing Firebase: ${e.toString()}");
@@ -49,14 +47,28 @@ class MyApp extends StatelessWidget {
               fontSize: 32,
               fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
+              color: AppColors.black,
             ),
-            displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
-            headlineLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            displayMedium: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w600,
+              color: AppColors.black,
+            ),
+            headlineLarge: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: AppColors.black,
+            ),
             headlineMedium: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w600,
+              color: AppColors.black,
             ),
-            bodyLarge: TextStyle(fontSize: 18, height: 1.5),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              height: 1.5,
+              color: Colors.black,
+            ),
             bodyMedium: TextStyle(
               fontSize: 18,
               height: 1.2,
@@ -64,14 +76,22 @@ class MyApp extends StatelessWidget {
               color: AppColors.textSecondary,
             ),
             labelLarge: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.8,
+              color: AppColors.black,
             ),
-              labelMedium: TextStyle(
+            labelMedium: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.8,
+              color: AppColors.black,
+            ),
+              labelSmall: TextStyle(
+              fontSize: 15,
+              height: 1.2,
+              fontWeight: FontWeight.w300,
+              color: AppColors.textSecondary,
             ),
           ),
         ),
